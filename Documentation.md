@@ -20,7 +20,99 @@ The overall value for the manipulated variable is therefore given by the followi
 In this representation, k is the corresponding process cycle period.
 
 Function Block Program for the Controller:
-(_______________________________________)
+
+FUNCTION_BLOCK PID (* PID controller *)
+VAR_INPUT
+    EN : BOOL; (* Enable input for controller *)
+    W : REAL; (* Setpoint in percent *)
+    X : REAL; (* Actual percentage value *)
+    HA : BOOL := 0; (* Manual/automatic switch (Manual: HA=0; Automatic: HA=1) *)
+    KP : REAL := 1.0; (* Proportional action coefficient *)
+    TN : REAL := 1.0; (* Reset time *)
+    TV : REAL := 0.0; (* Rate time *)
+    TAB : REAL := 1.0; (* Sampling time *)
+    YMIN : REAL := 0.0; (* Lower limit for Y *)
+    YMAX : REAL := 100.0; (* Upper limit for Y *)
+    YH : REAL; (* Manual manipulated variable percentage *)
+END_VAR
+
+VAR_OUTPUT
+    Y : REAL; (* Manipulated variable percentage *)
+END_VAR
+
+VAR
+    YP : REAL; (* P component *)
+    YD : REAL; (* D component *)
+    YI : REAL; (* Current I component *)
+    E : REAL; (* Error signal *)
+    E_OLD : REAL; (* Error signal in last cycle *)
+    YI_OLD : REAL; (* I component in last cycle *)
+    HA_OLD : BOOL := 0; (* Manual/automatic value in last cycle for edge detection *)
+END_VAR
+
+(* Start of control algorithm *)
+IF EN = TRUE THEN
+
+    (* Calculation for error signal *)
+    E := W - X;
+
+    (* Positive edge detection for switch from manual to automatic mode without jerks *)
+    IF HA_OLD = FALSE AND HA = TRUE THEN
+        YI_OLD := YH - KP * E - KP * TV * (E - E_OLD) / TAB - (KP * TAB / TN) * E;
+    END_IF;
+
+    IF HA = TRUE THEN
+        (* Automatic mode *)
+        
+        (* P component *)
+        YP := KP * E;
+
+        (* I component *)
+        IF TN > 0.0 THEN
+            YI := YI_OLD + (KP * TAB / TN) * E;
+        ELSE
+            YI := 0;
+        END_IF;
+
+        (* D component *)
+        IF TV > 0.0 AND TAB > 0.0 THEN
+            YD := KP * TV * (E - E_OLD) / TAB;
+            E_OLD := E; (* Save old error signal *)
+        ELSE
+            YD := 0.0;
+        END_IF;
+
+        (* Calculate manipulated variable *)
+        Y := YP + YI + YD;
+
+        (* Anti-reset wind-up (ARW) for YMAX *)
+        IF Y > YMAX THEN
+            Y := YMAX; (* Limit to YMAX *)
+            YI := YI_OLD; (* Stop integral action *)
+        END_IF;
+
+        (* Anti-reset wind-up (ARW) for YMIN *)
+        IF Y < YMIN THEN
+            Y := YMIN; (* Limit to YMIN *)
+            YI := YI_OLD; (* Stop integral action *)
+        END_IF;
+
+        (* Save I component for next cycle *)
+        YI_OLD := YI;
+    END_IF; (* End of automatic mode *)
+
+    IF HA = FALSE THEN
+        (* Manual mode *)
+        Y := YH; (* Output manipulated variable in manual mode *)
+    END_IF;
+
+    (* Save current manual/automatic value *)
+    HA_OLD := HA;
+
+END_IF;
+
+END_FUNCTION_BLOCK
+
 
 ### Testing the Controller
 
