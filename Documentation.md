@@ -45,8 +45,11 @@ This method involves recording the system's step response and analyzing the resu
 The user draws a tangent at the curve's inflection point (the point where the curvature changes direction).
 The intersections of this tangent with horizontal lines representing zero and the maximum value provide time values used to calculate the control parameters.
 The LabSoft software offers a tool to simplify this process by automatically calculating parameters based on the Ziegler-Nichols method or the Chien, Hrones, and Reswick method after the user draws the tangent.
+
 ![image](https://github.com/user-attachments/assets/ff80009b-4f2f-4ae0-b32e-5be6ad1ea427)
+
 ![image](https://github.com/user-attachments/assets/37474d96-f84f-481e-aa85-3a85604bb410)
+
 element with a time constant of 20 seconds and a gain of 1 is recorded.
 To draw the inflectional tangent, it is very helpful to use the zoom function. It is easier to detect the
 point of inflection at higher resolutions.
@@ -63,7 +66,9 @@ Step 2: Conversion to Percentage: Since the control algorithm within the PLC wor
 Step 3: Calculation Using Excel: The gathered data—Δy, Δxe%, t10, t50, and t90—are then entered into a provided Excel form. This form utilizes various tuning rules to automatically calculate the PI and PID control parameters based on the input data. The sources recommend using the "absolute value optimum" tuning rule for achieving the best control response in most applications.
 
 Step 1: 
+
 ![image](https://github.com/user-attachments/assets/c42582a2-dd00-420e-8651-657eb0c02dad)
+
 help of the touch panel; for this purpose, the curves can be evaluated easily using the software
 measurement tool . The time periods t10, t50 and t90 determined in this manner are also termed
 time-percentage characteristic values.
@@ -77,12 +82,14 @@ xE = end of the measuring range
 xA = start of the measuring range
 
 Step 3:
+
 ![image](https://github.com/user-attachments/assets/fd8ddd85-296f-4661-91e5-08af0d207ef5)
 
 Practical Example for above Tuning Method:
 Automatic temperature control of a drum Dryer
 
 ![image](https://github.com/user-attachments/assets/54b55561-380e-46b9-a540-65023ceea523)
+
 1: Input product
 2: Hot gas
 3: Gas burner
@@ -126,3 +133,70 @@ instance.
 
 ### Actual Experiment Procedure
 
+#### Project 01 | Filling vessel B101
+
+First we shall fill the lower vessel B101 from the lower reservoir B100. B101 will then itself be the
+reservoir for all future experiments. The final water level in B101 should be below the higher of the
+two binary sensors L4 so that pump P100 does not turn off automatically.
+The following illustration shows how the flow paths need to be set up
+
+![image](https://github.com/user-attachments/assets/4449ae4e-f820-4c2a-bb79-8f72280fd06b)
+
+The image includes the following aspects:
+The flow paths to be set, shown in blue
+The setting of the blue lever for the three-way valve.
+The state of the manual valve.
+
+Save the linked file TEMP_CO4204-3E_ENU_IPA1_Compact station in a local folder on
+your PC.
+Open the File menu and select the option Open Workspace... .
+Click the "Load Template..." button.
+Navigate to the folder location.
+Select the file that you just have saved.
+Open the workspace "Filling".
+Compile the program by pressing the symbol , under Compiler menu → Compile
+program or F7.
+Set the PLC to RUN mode and turn on the 24-V supply.
+Set the input for enabling the pump (IX 0.6).
+Set a speed for the pump using the DC source virtual instrument.
+
+--> Automatic control of water level
+
+This section covers implementation of a water level control system using a PI controller.
+The illustration below shows the required paths for the flow of water in blue.
+
+
+![image](https://github.com/user-attachments/assets/6a6c317e-bc53-48bf-964c-26213d66fec4)
+
+For this level control exercise, vessel B101 is to be used as a reservoir for filling vessel B102. B102
+has a drainage outlet.
+
+The controller requires the inputs to be connected as shown below.
+
+
+![image](https://github.com/user-attachments/assets/c4d37df2-5c83-41ea-ad6a-edd4829f5d37)
+
+
+![image](https://github.com/user-attachments/assets/c9db9a82-4d46-4bd9-bdc4-19a41e6c5ab1)
+
+100.0-the actual value is considered instead of the actual value itself, because the value from
+the ultrasonic sensor is at its highest when the vessel is empty and falls as the level rises.
+
+Save the linked file TEMP_CO4204-3E_ENU_IPA1_Compact station in a local folder on
+your PC.
+Open the File menu and select the option Open Workspace... .
+Click the "Load Template..." button.
+Navigate to the folder location.
+Select the file that you just have saved.
+Open the corresponding workspace.
+Open the virtual instrument CONTROLLER MONITOR
+Select the step response view.
+Open the Parameter menu and make the following settings for the control monitor.
+
+
+![image](https://github.com/user-attachments/assets/a60d8de7-f433-4473-9969-ecc06413155a)
+
+
+![image](https://github.com/user-attachments/assets/6269e0ab-549f-49e0-80b0-ba94fbf1d1e7)
+
+Recording Step Response:
