@@ -131,7 +131,7 @@ t90 = 1.53 h
 PI control parameters are then calculated according to the "modulus optimum" tuning rule, for
 instance.
 
-### Actual Experiment Procedure
+### Actual Experiment Procedure | Compact Station
 
 #### Project 01 | Filling vessel B101
 
@@ -200,3 +200,257 @@ Open the Parameter menu and make the following settings for the control monitor.
 ![image](https://github.com/user-attachments/assets/6269e0ab-549f-49e0-80b0-ba94fbf1d1e7)
 
 Recording Step Response:
+The next thing to do is to record a step response for the control loop and use the adjustment rules for
+the loop to identify the appropriate parameters.
+Start with the hardware set-up from the previous page and add the wiring shown below. These
+connections are required for activating the step and reading off the actual value.
+
+program or F7.
+Set the PLC to RUN mode and turn on the 24-V supply.
+Input switch I_HA (IX0.7) needs to be at 0 position to set the controller to manual mode.
+Empty vessel B102.
+Close the manual valve V104 and then open it by turning it three full revolutions anticlockwise.
+Valve V106 needs to be open.
+Set the input for enabling the pump (IX 0.6).
+Now start the step response plotter . The measurement will take 10 minutes.
+
+The Curve:
+
+![image](https://github.com/user-attachments/assets/7553b575-aeff-4ba5-bfc9-f511a4f2a080)
+
+Draw the inflectional tangent onto the plot. It is easier to draw the tangent if you magnify
+the first part of the curve.
+Use "Evaluate" to display the controller parameters using the Chien, Hrones and Reswick
+method. Set up an aperiodic system with optimisation for disturbances.
+Copy your results into the placeholder below.
+
+Controller Set-up and Testing:
+Enter values for Kp and TN into your program
+Compile the program by pressing the symbol , under Compiler menu → Compile
+program or F7.
+Set the PLC system back into RUN mode.
+Swap over the connection from the analog output of the UniTrain systems from the
+second analog input of the PLC card to the third one .
+Input switch I_HA (IX0.7) must be set to 1 for the controller to operate in automatic mode.
+Now you can change the controller set-point in automatic mode. First you can use the DC
+source virtual instrument to input a value and observe how the water level changes in the
+system.
+
+#### Project 02 | Automatic Pressure Control
+
+This section covers implementing pressure control using a PI controller.
+The illustration below shows the required paths for the flow of water in blue.
+
+![image](https://github.com/user-attachments/assets/022fd4ad-93b5-4f1b-9625-928c7fbd5788)
+
+For the pressure control experiment, vessel B101 is used a s a reservoir feeding vessel B102. B102
+has a drainage outlet.
+
+The only thing to have changed from the level control experiment is that a connection for the
+pressure level goes to the first input on the PLC unit instead of one for the filling level
+(volume).
+
+![image](https://github.com/user-attachments/assets/f240e4af-7ec2-4132-9eef-aa7e6e0ddb2c)
+
+
+![image](https://github.com/user-attachments/assets/50bb1e55-c1bc-433a-97ac-1d88d2e2163c)
+
+
+Save the linked file TEMP_CO4204-3E_ENU_IPA1_Compact station in a local folder on
+your PC.
+Open the File menu and select the option Open Workspace... .
+Click the "Load Template..." button.
+Navigate to the folder location.
+Select the file that you just have saved.
+Open the corresponding workspace.
+Open the virtual instrument CONTROLLER MONITOR.
+Select the step response view.
+Open the Parameter menu and make the following settings for the control monitor.
+
+![image](https://github.com/user-attachments/assets/d1d11e61-8e0f-4c03-96ed-8c381b01fb0b)
+
+Recording Step Response
+
+The next thing to do is to record a step response for the control loop and use the adjustment rules for
+the loop to identify the appropriate parameters.
+Start with the hardware set-up from the previous page and add the wiring shown below. These
+connections are required for activating the step and reading off the actual value.
+
+Compile the program by pressing the symbol , under Compiler menu → Compile
+program or F7.
+Set the PLC to RUN mode and turn on the 24-V supply.
+Input switch I_HA (IX0.7) needs to be at 0 position to set the controller to manual mode.
+Empty vessel B102.
+Close valve V106 so that the pressure in the vessel can build up.
+Close the manual valve V104.
+Set the input for enabling the pump (IX 0.6).
+Now start the step response plotter.
+
+![image](https://github.com/user-attachments/assets/8290daae-07c1-4d98-97d0-509a24661e3c)
+
+
+The curve starts off almost linear, which makes it difficult to draw an inflectional
+tangent.Therefore the evaluation should be made using the time-based percentage
+method
+
+Controller Set-up and Testing 
+Enter values for Kp and TN into your program.
+Compile the program by pressing the symbol , under Compiler menu → Compile
+program or F7.
+Set the PLC system back into RUN mode.
+Swap over the connection from the analog output of the UniTrain systems from the
+second analog input of the PLC card to the third one.
+Input switch I_HA (IX0.7) must be set to 1 for the controller to operate in automatic mode.
+Now you can change the controller setpoint in automatic mode. First you can use the DC
+source virtual instrument to input a value and observe how the pressure level changes in
+the system.
+
+![image](https://github.com/user-attachments/assets/b2a07072-1aca-4951-9b95-29c52512e616)
+
+
+Start the time trace plotter.
+Next, open V104 by about half a turn to simulate a disturbance. This causes the
+controlled variable to decrease.
+
+#### Project 03 | Automatic Flow Rate Control
+
+This section covers implementing flow rate control using a PI controller.
+The illustration below shows the required paths for the flow of water in blue
+
+![image](https://github.com/user-attachments/assets/0f85b901-359b-4567-bbfa-0701b5ba4040)
+
+
+In this case, flow rate control is implemented by pumping water out of the vessel, B101, which you
+filled previously. Float sensor F1 can also measure flow readings in a range from 0 ... 3 l/min.
+
+The only thing to have changed from the pressure control experiment is that a connection for
+the volume flow goes to the first input on the PLC unit instead of one for the pressure.
+
+![image](https://github.com/user-attachments/assets/42e50f7f-d0b2-4d0b-81dc-d59459cfb738)
+
+
+![image](https://github.com/user-attachments/assets/740f0330-7e79-4c20-a7e0-194e17407dfd)
+
+
+Save the linked file TEMP_CO4204-3E_ENU_IPA1_Compact station in a local folder on
+your PC.
+Open the File menu and select the option Open Workspace... .
+Click the "Load Template..." button.
+Navigate to the folder location.
+Select the file that you just have saved.
+Open the corresponding workspace.
+Open the virtual instrument CONTROLLER MONITOR.
+Select the step response view.
+Open the Parameter menu and make the following settings for the control monitor.
+
+![image](https://github.com/user-attachments/assets/ffc237c6-3ced-4e76-82cc-f97ee0995a83)
+
+
+Recording Step Response 
+
+Compile the program by pressing the symbol , under Compiler menu → Compile
+program or F7.
+Set the PLC to RUN mode and turn on the 24-V supply.
+Input switch I_HA (IX0.7) needs to be at 0 position to set the controller to manual mode.
+Set the input for enabling the pump (IX 0.6).
+Now start the step response plotter.
+
+You should record the step response twice, since the first time there is likely to be air in the pipes,
+which would cause incorrect readings.
+After making the recording, you can set up the display properties as appropriate. Since the step
+occurs very quickly, you only need to consider the first part of the curve, so that you can zoom in on
+that area for better resolution when you are drawing in the inflectional tangent.
+
+![image](https://github.com/user-attachments/assets/d84f85ff-44c9-40ba-b7fb-840345d48f0c)
+
+
+Draw the inflectional tangent for the curve.
+Let the computer work out the controller parameters and display for a Chien, Hrones and
+Reswick configuration. Select an aperiodic time-base, optimized for the reference
+variable.
+
+Controller Set-up and Testing 
+
+Enter values for Kp and TN into your program
+Compile the program by pressing the symbol , under Compiler menu → Compile
+program or F7.
+Set the PLC system back into RUN mode.
+Swap over the connection from the analog output of the UniTrain systems from the
+second analog input to the third one.
+Input switch I_HA (IX0.7) must be set to 1 for the controller to operate in automatic mode.
+Now you can change the controller setpoint in automatic mode. First you can use the DC
+source virtual instrument to input a value and observe how the flow through the system
+changes.
+
+![image](https://github.com/user-attachments/assets/b3ef3ae2-0136-4abf-a7ef-de913f4fbddb)
+
+#### Project 04 | Automatic temperature control using two-position controller
+
+In this section, you are to control the temperature of vessel B101. Since the actuator (heater E101)
+can only be on or off, the controller only needs to be a switch controller. We will use a twoposition
+controller for this, as explained on the following pages.
+
+The illustration below shows the required paths for the flow of water in blue.
+Automatic temperature control using two-position controller
+
+![image](https://github.com/user-attachments/assets/5cfc608a-2ca3-482c-85fe-03403c7d4bc9)
+
+
+While the temperature is being controlled, the reservoir should continually have water pumped
+through it in order to keep the contents well mixed.
+
+The following illustration shows the basic principle of a two-position controller. The name comes from
+the fact that such a controller can only assume two possible states, either on or off.
+
+![image](https://github.com/user-attachments/assets/2882248d-d999-44af-ab96-2809e8104216)
+
+
+Key:
+y: Manipulated variable,
+e: System deviation or error signal,
+H:Degree of hysteresis,
+ON: On state,
+OFF: Off state.
+As you can see from the above characteristic curve, compares the defined setpoint with the value
+currently detected for the controlled variable and works out the deviation e. If the deviation is large
+enough, the controller turns on and when the deviation is sufficiently small, the controller turns off.
+Hysteresis is a physical term meaning how long an action continues to have an effect after cessation
+of the cause. In this case it gives rise to a relatively large reduction in switching frequency as
+opposed to case in which there were no hysteresis (i.e. H = 0), thus reducing stress on the actuator
+circuit. In practice, when settled, the controlled variable x fluctuates by an amount ±H around the
+setpoint value w. You will be able to verify this later.
+As the difference e gets larger, the hysteresis curve follows its lower path, whereas as it
+reduces, hysteresis takes the upper path.
+
+Controller:
+
+![image](https://github.com/user-attachments/assets/601fe4b6-0dfd-4205-b935-e9c4d7e824af)
+
+![image](https://github.com/user-attachments/assets/69a21710-93fd-45d9-b79e-b8800818703f)
+
+
+Save the linked file TEMP_CO4204-3E_ENU_IPA1_Compact station in a local folder on
+your PC.
+Open the File menu and select the option Open Workspace... .
+Click the "Load Template..." button.
+Navigate to the folder location.
+Select the file that you just have saved.
+Open the workspace "Temperature".
+First finish off the programming for the controller module as described above.
+Compile the program by pressing the symbol , under Compiler menu → Compile
+program or F7.
+
+Considerations:
+The binary output for the heater control does not go straight to the heating system but turns on
+an additional hardware switch (not shown) which prevents the heating control reaching temperatures
+(see the section containing the flow diagram for the system).
+The the algorithm for a two-position controller does not take account of a sampling period Tsp, the
+EN input to the controller can be permanently fixed to TRUE.
+Since the measuring range of the temperature sensor is 0°C ... 100°C and the variables are
+converted into percentages, the numeric values as a percentage coincidentally match the
+temperature values in °C for this controller.
+The following additional factors need to be worked into the programming:
+The heating control should only be enabled when the pump is running.
+When pumping water out, the pump should be activated at a voltage of 10 V.
+The heating will be turned off by the software, if the temperature is detected to be higher
+than 55°C.
